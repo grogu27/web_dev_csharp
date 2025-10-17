@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "cq+angS6UDc=",
+  "success": true,
+  "projectFilePath": "/home/grogu/project/4_course/web_dev/web_dev_c-/MarginalValera/MarginalValera.csproj",
+  "expectedPackageFiles": [
+    "/home/grogu/.nuget/packages/microsoft.aspnetcore.openapi/9.0.10/microsoft.aspnetcore.openapi.9.0.10.nupkg.sha512",
+    "/home/grogu/.nuget/packages/microsoft.openapi/1.6.17/microsoft.openapi.1.6.17.nupkg.sha512"
+  ],
+  "logs": []
+}

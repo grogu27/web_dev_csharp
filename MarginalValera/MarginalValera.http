@@ -1,0 +1,6 @@
+@MarginalValera_HostAddress = http://localhost:5202
+
+GET {{MarginalValera_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
