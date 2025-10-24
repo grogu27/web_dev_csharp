@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MarginalValera")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0d6ccbfd29e22dcf052878630e36bdf02735c16b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+93544bfa576b43b01e78cad97aa100bf7c56c4dc")]
 [assembly: System.Reflection.AssemblyProductAttribute("MarginalValera")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MarginalValera")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
