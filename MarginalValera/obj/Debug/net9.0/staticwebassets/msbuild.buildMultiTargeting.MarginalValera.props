@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/MarginalValera.props" />
+</Project>
