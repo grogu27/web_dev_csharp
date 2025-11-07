@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using MarginalValera.Services;
 using MarginalValera.Models;
+using MarginalValera.Services;
+using MarginalValera.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace MarginalValera.Controllers
 {
@@ -8,19 +10,64 @@ namespace MarginalValera.Controllers
     [Route("api/[controller]")]
     public class ValeraController : ControllerBase
     {
-        private readonly ValeraService _service = new ValeraService();
+        private readonly AppDbContext _context;
 
-        [HttpGet]
-        public ActionResult<Valera> GetState()
+        public ValeraController(AppDbContext context)
         {
-            return Ok(_service.GetState());
+            _context = context;
         }
 
-        [HttpPost("{actionName}")]
-        public ActionResult<Valera> DoAction(string actionName)
+        private ValeraService CreateService() => new ValeraService(_context);
+
+        // GET /api/valera
+        [HttpGet]
+        public async Task<ActionResult<List<Valera>>> GetAll()
         {
-            _service.DoAction(actionName);
-            return Ok(_service.GetState());
+            var valeras = await CreateService().GetAllValerasAsync();
+            return Ok(valeras);
+        }
+
+        // POST /api/valera
+        [HttpPost]
+        public async Task<ActionResult<Valera>> Create()
+        {
+            var valera = await CreateService().AddValeraAsync();
+            return Ok(valera);
+        }
+
+        // GET /api/valera/{id}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Valera>> GetById(int id)
+        {
+            try
+            {
+                var valera = await CreateService().GetValeraAsync(id);
+                return Ok(valera);
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(new { error = ex.Message });
+            }
+        }
+
+        // POST /api/valera/{id}/{actionName}
+        [HttpPost("{id}/{actionName}")]
+        public async Task<ActionResult<Valera>> DoAction(int id, string actionName)
+        {
+            try
+            {
+                await CreateService().DoActionAsync(id, actionName);
+                var valera = await CreateService().GetValeraAsync(id);
+                return Ok(valera);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
         }
     }
 }

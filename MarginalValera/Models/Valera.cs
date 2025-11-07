@@ -1,7 +1,14 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace MarginalValera.Models
 {
     public class Valera
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }  
+
         // public int Health { get; private set; } = 100;
         // public int Alcohol { get; private set; } = 0;
         // public int Cheerfulness { get; private set; } = 0;
@@ -41,7 +48,7 @@ namespace MarginalValera.Models
             private set { _Money = value; }
         }
         //private int Clamp(int value, int min, int max) => Math.Min(Math.Max(value, min), max);
-        private int Clamp(int value, int min, int max) 
+        private int Clamp(int value, int min, int max)
         {
             return Math.Min(Math.Max(value, min), max);
         }

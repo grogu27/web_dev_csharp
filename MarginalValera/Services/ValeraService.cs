@@ -1,28 +1,90 @@
-using Microsoft.AspNetCore.Mvc;
-using MarginalValera.Services;
+using MarginalValera.Data;
 using MarginalValera.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace MarginalValera.Controllers
+namespace MarginalValera.Services
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ValeraController : ControllerBase
+    public class ValeraService
     {
-        private readonly ValeraService _service = new ValeraService();
+        private readonly AppDbContext _context;
 
-        [HttpGet]
-        public ActionResult<Valera> GetState()
+        public ValeraService(AppDbContext context)
         {
-            return Ok(_service.GetState());
+            _context = context;
         }
 
-        [HttpPost("{actionName}")]
-        public ActionResult<Valera> DoAction(string actionName)
+        // Получить всех Валер
+        public async Task<List<Valera>> GetAllValerasAsync()
         {
-            _service.DoAction(actionName);
-            return Ok(_service.GetState());
+            return await _context.Valeras.ToListAsync();
         }
-    }
+
+        // Получить Валеру по Id
+        public async Task<Valera> GetValeraAsync(int id)
+        {
+            var valera = await _context.Valeras.FindAsync(id);
+            if (valera == null)
+                throw new ArgumentException($"Valera with id {id} not found");
+            return valera;
+        }
+        public async Task<Valera> AddValeraAsync()
+        {
+            var valera = new Valera();
+            _context.Valeras.Add(valera);
+            await _context.SaveChangesAsync();
+            return valera;
+        }
+
+
+        // Создать новую Валеру
+            public async Task<Valera> DoActionAsync(int id, string action)
+            {
+                var valera = await _context.Valeras.FindAsync(id);
+
+                if (valera == null)
+                {
+                    valera = new Valera();
+                    _context.Valeras.Add(valera);
+                    await _context.SaveChangesAsync();
+                }
+
+                bool success;
+
+                switch (action.ToLower())
+                {
+                    case "work":
+                        success = valera.GoToWork();
+                        break;
+                    case "nature":
+                        valera.EnjoyNature();
+                        success = true;
+                        break;
+                    case "wine":
+                        success = valera.DrinkWineAndWatchSeries();
+                        break;
+                    case "bar":
+                        success = valera.GoToBar();
+                        break;
+                    case "marginals":
+                        success = valera.DrinkWithMarginals();
+                        break;
+                    case "sing":
+                        valera.SingInMetro();
+                        success = true;
+                        break;
+                    case "sleep":
+                        valera.Sleep();
+                        success = true;
+                        break;
+                    default:
+                        throw new ArgumentException($"Unknown action: {action}");
+                }
+
+                if (!success)
+                    throw new InvalidOperationException("Not enough money to perform this action");
+
+                await _context.SaveChangesAsync();
+                return valera;
+            }
+        }
 }
-
-
