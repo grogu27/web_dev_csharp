@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -21,6 +21,7 @@ function StatBar({ label, value, max = 100 }) {
 
 export default function ValeraStats() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [valera, setValera] = useState(null);
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
@@ -55,11 +56,15 @@ export default function ValeraStats() {
 
   if (loading || !valera) return <Typography>Загрузка...</Typography>;
 
-  // "Пойти на работу": усталость >=10 или алкоголь >=50
   const workDisabled = (valera.fatigue ?? 0) >= 10 || (valera.alcohol ?? 0) >= 50;
 
   return (
     <Paper sx={{ p: 3 }}>
+      {/* Кнопка Назад */}
+      <Button variant="outlined" sx={{ mb: 2 }} onClick={() => navigate("/")}>
+        Назад
+      </Button>
+
       <Typography variant="h5" gutterBottom>{valera.name || `Валера #${valera.id}`}</Typography>
 
       <Stack spacing={2} sx={{ mb: 3 }}>

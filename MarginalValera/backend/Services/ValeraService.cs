@@ -28,6 +28,11 @@ namespace MarginalValera.Services
         }
         public async Task<List<Valera>> GetMyValerasAsync(ClaimsPrincipal user)
         {
+            if (user.IsInRole("Admin"))
+            {
+                return await GetAllValerasAsync(); 
+            }
+            
             int userId = int.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier));
             return await _context.Valeras
                 .Where(v => v.OwnerId == userId)

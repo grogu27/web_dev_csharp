@@ -9,9 +9,7 @@ export default function ValeraCard({ valera, onClick }) {
     <Card variant="outlined" sx={{ cursor: "pointer" }} onClick={onClick}>
       <CardContent>
         <Typography variant="subtitle1">{name}</Typography>
-        <Typography variant="body2" color="text.secondary">
-          id: {valera.id}
-        </Typography>
+        <Typography variant="body2" color="text.secondary">id: {valera.id}</Typography>
       </CardContent>
     </Card>
   );
