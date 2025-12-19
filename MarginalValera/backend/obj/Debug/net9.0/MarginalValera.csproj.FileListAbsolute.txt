@@ -599,3 +599,8 @@
 /home/grogu/project/4_course/web_dev_csharp/web_dev_csharp/MarginalValera/Backend/obj/Debug/net9.0/MarginalValera.pdb
 /home/grogu/project/4_course/web_dev_csharp/web_dev_csharp/MarginalValera/Backend/obj/Debug/net9.0/MarginalValera.genruntimeconfig.cache
 /home/grogu/project/4_course/web_dev_csharp/web_dev_csharp/MarginalValera/Backend/obj/Debug/net9.0/ref/MarginalValera.dll
+/home/grogu/project/4_course/web_dev_csharp/web_dev_csharp/MarginalValera/backend/bin/Debug/net9.0/Microsoft.IdentityModel.Abstractions.dll
+/home/grogu/project/4_course/web_dev_csharp/web_dev_csharp/MarginalValera/backend/bin/Debug/net9.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/home/grogu/project/4_course/web_dev_csharp/web_dev_csharp/MarginalValera/backend/bin/Debug/net9.0/Microsoft.IdentityModel.Logging.dll
+/home/grogu/project/4_course/web_dev_csharp/web_dev_csharp/MarginalValera/backend/bin/Debug/net9.0/Microsoft.IdentityModel.Tokens.dll
+/home/grogu/project/4_course/web_dev_csharp/web_dev_csharp/MarginalValera/backend/bin/Debug/net9.0/System.IdentityModel.Tokens.Jwt.dll

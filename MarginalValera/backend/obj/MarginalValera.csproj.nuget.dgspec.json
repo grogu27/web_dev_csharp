@@ -67,6 +67,10 @@
               "target": "Package",
               "version": "[6.7.0, )"
             },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.15.0, )"
+            },
             "xunit": {
               "target": "Package",
               "version": "[2.9.3, )"

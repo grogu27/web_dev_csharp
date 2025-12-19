@@ -1,25 +1,32 @@
 using MarginalValera.Data;
 using MarginalValera.Models;
 using Microsoft.EntityFrameworkCore;
+using MarginalValera.DTOs;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace MarginalValera.Services
 {
     public class ValeraService
     {
         private readonly AppDbContext _context;
+        private readonly PasswordHasher<User> _passwordHasher; 
 
         public ValeraService(AppDbContext context)
         {
             _context = context;
+            _passwordHasher = new PasswordHasher<User>();
+
         }
 
-        // Получить всех Валер
         public async Task<List<Valera>> GetAllValerasAsync()
         {
             return await _context.Valeras.ToListAsync();
         }
 
-        // Получить Валеру по Id
         public async Task<Valera> GetValeraAsync(int id)
         {
             var valera = await _context.Valeras.FindAsync(id);
@@ -43,7 +50,6 @@ namespace MarginalValera.Services
             return valera;
         }
 
-        // Создать новую Валеру
             public async Task<Valera> DoActionAsync(int id, string action)
             {
                 var valera = await _context.Valeras.FindAsync(id);
@@ -102,6 +108,7 @@ namespace MarginalValera.Services
                 _context.Valeras.Remove(valera);
                 await _context.SaveChangesAsync();
             }
+  
 
         }
 }
