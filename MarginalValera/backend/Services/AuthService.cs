@@ -29,10 +29,14 @@ namespace MarginalValera.Services
             if (await _context.Users.AnyAsync(u => u.Email == request.Email))
                 throw new InvalidOperationException("Email уже используется");
 
+            if (await _context.Users.AnyAsync(u => u.Username == request.Username))
+                throw new InvalidOperationException("Имя пользователя уже используется");
+
             var user = new User
             {
                 Email = request.Email,
-                Username = request.Username
+                Username = request.Username,
+                Role = string.IsNullOrEmpty(request.Role) ? "User" : request.Role
             };
 
             user.PasswordHash = _passwordHasher.HashPassword(user, request.Password);
@@ -67,18 +71,21 @@ namespace MarginalValera.Services
         }
 
         // Логин и генерация JWT
-        public async Task<string> LoginAsync(string email, string password)
+        public async Task<string> LoginAsync(string email, string password, string username)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-            if (user == null)
-                throw new InvalidOperationException("Неверный email или пароль");
+            if (user == null || user.Username != username)
+                throw new InvalidOperationException("Неверный email, имя или пароль");
 
             var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
             if (result == PasswordVerificationResult.Failed)
-                throw new InvalidOperationException("Неверный email или пароль");
+                throw new InvalidOperationException("Неверный email, имя или пароль");
+
+
 
             var claims = new[]
             {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(ClaimTypes.Role, user.Role),
@@ -86,7 +93,12 @@ namespace MarginalValera.Services
 
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var jwtKey = _configuration["Jwt:Key"]
+                ?? throw new InvalidOperationException("Jwt:Key is not configured");
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
+
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(

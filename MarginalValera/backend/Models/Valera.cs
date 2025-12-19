@@ -129,7 +129,7 @@ namespace MarginalValera.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
+        public int OwnerId { get; set; } 
         public int Health { get; set; } = 100;
         public int Alcohol { get; set; } = 0;
         public int Cheerfulness { get; set; } = 0;

@@ -101,7 +101,7 @@ namespace MarginalValera.Controllers
         {
             try
             {
-                var token = await _authService.LoginAsync(request.Email, request.Password);
+                var token = await _authService.LoginAsync(request.Email, request.Password, request.Username);
                 return Ok(new { token });
             }
             catch (InvalidOperationException ex)
@@ -109,7 +109,7 @@ namespace MarginalValera.Controllers
                 return Unauthorized(new { message = ex.Message });
             }
         }
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet("users")]
         [SwaggerOperation(Summary = "Получить всех пользователей")]
         [SwaggerResponse(200, "Список пользователей успешно получен")]
@@ -119,8 +119,8 @@ namespace MarginalValera.Controllers
             var users = await _authService.GetAllUsersAsync();
             return Ok(users);
         }
-        
-        [Authorize]
+
+        [Authorize(Roles = "User,Admin")]
         [HttpDelete("users/{id}")]
         [SwaggerOperation(Summary = "Удалить пользователя по Id")]
         [SwaggerResponse(200, "Пользователь успешно удален")]

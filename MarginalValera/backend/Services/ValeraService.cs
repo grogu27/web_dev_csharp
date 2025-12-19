@@ -34,10 +34,11 @@ namespace MarginalValera.Services
                 throw new ArgumentException($"Valera with id {id} not found");
             return valera;
         }
-        public async Task<Valera> AddValeraAsync(Valera? newValera)
+        public async Task<Valera> AddValeraAsync(Valera? newValera, int ownerId)
         {
             var valera = new Valera
             {
+                OwnerId = ownerId,
                 Health = newValera?.Health ?? 100,
                 Alcohol = newValera?.Alcohol ?? 0,
                 Cheerfulness = newValera?.Cheerfulness ?? 0,
@@ -49,10 +50,23 @@ namespace MarginalValera.Services
             await _context.SaveChangesAsync();
             return valera;
         }
+        private void CheckAccess(Valera valera, ClaimsPrincipal user)
+        {
+            if (user.IsInRole("Admin"))
+                return;
 
-            public async Task<Valera> DoActionAsync(int id, string action)
+            int userId = int.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (valera.OwnerId != userId)
+                throw new UnauthorizedAccessException("Это не ваша Валера");
+        }
+
+
+            public async Task<Valera> DoActionAsync(int id, string action, ClaimsPrincipal user)
             {
                 var valera = await _context.Valeras.FindAsync(id);
+                if (valera == null)
+                    throw new ArgumentException($"Valera with id {id} not found");
+                CheckAccess(valera, user);
 
                 if (valera == null)
                 {
@@ -99,11 +113,26 @@ namespace MarginalValera.Services
                 await _context.SaveChangesAsync();
                 return valera;
             }
-            public async Task DeleteValeraAsync(int id)
+            public async Task DeleteValeraAsync(int id, ClaimsPrincipal user)
             {
                 var valera = await _context.Valeras.FindAsync(id);
                 if (valera == null)
                     throw new ArgumentException($"Valera with id {id} not found");
+
+                if (user.IsInRole("Admin"))
+                {
+                    _context.Valeras.Remove(valera);
+                    await _context.SaveChangesAsync();
+                    return;
+                }
+                var userIdClaim = user.FindFirstValue(ClaimTypes.NameIdentifier)
+                    ?? throw new UnauthorizedAccessException("UserId not found in token");
+
+                int userId = int.Parse(userIdClaim);
+                //int userId = int.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier));
+                if (valera.OwnerId != userId)
+                    throw new UnauthorizedAccessException("You cannot delete someone else's Valera");
+
 
                 _context.Valeras.Remove(valera);
                 await _context.SaveChangesAsync();

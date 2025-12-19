@@ -37,7 +37,11 @@ builder.Services.AddCors(options =>
 });
 
 // ===== JWT  =====
-var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]);
+//var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]);
+var jwtKey = builder.Configuration["Jwt:Key"]
+    ?? throw new InvalidOperationException("Jwt:Key is not configured");
+
+var key = Encoding.UTF8.GetBytes(jwtKey);
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -67,7 +71,11 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddAuthorization(); //  middleware авторизации
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("UserOrAdmin", policy => policy.RequireRole("User", "Admin"));
+});
 
 var app = builder.Build();
 

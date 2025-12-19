@@ -40,18 +40,33 @@ curl -X POST http://127.0.0.1:5202/api/auth/register \
   -d '{
     "email": "test@mail.com",
     "username": "testuser",
-    "password": "123456"
+    "password": "123456",
+    "role": "User"
   }'
 
 curl -X POST http://127.0.0.1:5202/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
     "email": "test@mail.com",
-    "password": "123456"
+    "password": "123456",
+    "username": "testuser"
+  }'
+curl -X POST http://127.0.0.1:5202/api/auth/login   -H "Content-Type: application/json"   -d '{
+    "email": "adminka@mail.com",
+    "password": "admin", "username": "admin"
   }'
 
 curl http://127.0.0.1:5202/api/valera
 curl http://127.0.0.1:5202/api/valera \
   -H "Authorization: Bearer <JWT_ТОКЕН>"
+curl http://127.0.0.1:5202/api/valera
 curl http://127.0.0.1:5202/api/auth/users
 curl -i http://127.0.0.1:5202/api/valera
+curl -X DELETE http://127.0.0.1:5202/api/valera/10 \
+  -H "Authorization: Bearer ADMIN_JWT"
+curl -X DELETE http://127.0.0.1:5202/api/auth/users/7 \
+  -H "Authorization: Bearer ADMIN_JWT"
+
+UPDATE Users
+SET Role = 'Admin'
+WHERE Email = 'admin@mail.com';

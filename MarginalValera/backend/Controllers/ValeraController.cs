@@ -3,10 +3,10 @@ using MarginalValera.Models;
 using MarginalValera.Services;
 using Swashbuckle.AspNetCore.Annotations;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace MarginalValera.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ValeraController : ControllerBase
@@ -18,6 +18,7 @@ namespace MarginalValera.Controllers
             _service = service;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [SwaggerOperation(
             Summary = "Получить всех Валер",
@@ -30,6 +31,7 @@ namespace MarginalValera.Controllers
             return Ok(valeras);
         }
 
+        [Authorize(Roles = "User,Admin")]
         [HttpPost]
         [SwaggerOperation(
             Summary = "Создать Валеру",
@@ -38,10 +40,16 @@ namespace MarginalValera.Controllers
         [SwaggerResponse(200, "Валера успешно создан", typeof(Valera))]
         public async Task<ActionResult<Valera>> Create([FromBody] Valera? valera = null)
         {
-            var created = await _service.AddValeraAsync(valera);
+            //int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                ?? throw new UnauthorizedAccessException("UserId not found in token");
+
+            int userId = int.Parse(userIdClaim);
+            var created = await _service.AddValeraAsync(valera, userId);
             return Ok(created);
         }
 
+        [Authorize(Roles = "User,Admin")]
         [HttpGet("{id}")]
         [SwaggerOperation(
             Summary = "Получить Валеру по Id",
@@ -62,6 +70,7 @@ namespace MarginalValera.Controllers
             }
         }
 
+        [Authorize(Roles = "User,Admin")]
         [HttpPost("{id}/{actionName}")]
         [SwaggerOperation(
             Summary = "Выполнить действие Валеры",
@@ -73,7 +82,7 @@ namespace MarginalValera.Controllers
         {
             try
             {
-                var valera = await _service.DoActionAsync(id, actionName);
+                var valera = await _service.DoActionAsync(id, actionName, User);
                 return Ok(valera);
             }
             catch (Exception ex) when (ex is ArgumentException || ex is InvalidOperationException)
@@ -82,6 +91,7 @@ namespace MarginalValera.Controllers
             }
         }
 
+        [Authorize(Roles = "User,Admin")]
         [HttpDelete("{id}")]
         [SwaggerOperation(
             Summary = "Удалить Валеру по Id",
@@ -93,8 +103,12 @@ namespace MarginalValera.Controllers
         {
             try
             {
-                await _service.DeleteValeraAsync(id);
+                await _service.DeleteValeraAsync(id, User);
                 return Ok(new { message = $"Valera #{id} успешно удален" });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Forbid(ex.Message);
             }
             catch (ArgumentException ex)
             {
