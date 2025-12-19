@@ -50,10 +50,12 @@ curl -X POST http://127.0.0.1:5202/api/auth/login \
     "email": "test@mail.com",
     "password": "123456",
     "username": "testuser"
+    
   }'
 curl -X POST http://127.0.0.1:5202/api/auth/login   -H "Content-Type: application/json"   -d '{
     "email": "adminka@mail.com",
-    "password": "admin", "username": "admin"
+    "password": "admin", 
+    "username": "admin"
   }'
 
 curl http://127.0.0.1:5202/api/valera
@@ -70,3 +72,8 @@ curl -X DELETE http://127.0.0.1:5202/api/auth/users/7 \
 UPDATE Users
 SET Role = 'Admin'
 WHERE Email = 'admin@mail.com';
+
+
+
+curl http://127.0.0.1:5202/api/valera/49 \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjQiLCJzdWIiOiI0IiwiZW1haWwiOiJ0ZXN0QG1haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJ0ZXN0dXNlciIsImV4cCI6MTc2NjE2MTc4NywiaXNzIjoiTWFyZ2luYWxWYWxlcmEiLCJhdWQiOiJNYXJnaW5hbFZhbGVyYUNsaWVudCJ9.zBE8JKP40ji1ORVTuxq4UodZHVr8nSVLkzXgyqXo2h0"

@@ -32,6 +32,21 @@ namespace MarginalValera.Controllers
         }
 
         [Authorize(Roles = "User,Admin")]
+        [HttpGet("my")]
+        [SwaggerOperation(
+            Summary = "Получить только свои Валеры",
+            Description = "Возвращает список Валер, принадлежащих текущему авторизованному пользователю"
+        )]
+        [SwaggerResponse(200, "Список Валер успешно получен", typeof(List<Valera>))]
+        [SwaggerResponse(401, "Пользователь не авторизован")]
+        public async Task<ActionResult<List<Valera>>> GetMyValeras()
+        {
+            var valeras = await _service.GetMyValerasAsync(User);
+            return Ok(valeras);
+        }
+
+
+        [Authorize(Roles = "User,Admin")]
         [HttpPost]
         [SwaggerOperation(
             Summary = "Создать Валеру",

@@ -26,6 +26,13 @@ namespace MarginalValera.Services
         {
             return await _context.Valeras.ToListAsync();
         }
+        public async Task<List<Valera>> GetMyValerasAsync(ClaimsPrincipal user)
+        {
+            int userId = int.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier));
+            return await _context.Valeras
+                .Where(v => v.OwnerId == userId)
+                .ToListAsync();
+        }
 
         public async Task<Valera> GetValeraAsync(int id)
         {
