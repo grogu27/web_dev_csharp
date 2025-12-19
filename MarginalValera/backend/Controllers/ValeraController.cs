@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using MarginalValera.Models;
 using MarginalValera.Services;
 using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MarginalValera.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ValeraController : ControllerBase

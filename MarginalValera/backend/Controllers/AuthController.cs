@@ -59,6 +59,7 @@ using Microsoft.AspNetCore.Mvc;
 using MarginalValera.Services;
 using MarginalValera.DTOs;
 using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MarginalValera.Controllers
 {
@@ -73,6 +74,7 @@ namespace MarginalValera.Controllers
             _authService = authService;
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         [SwaggerOperation(Summary = "Регистрация нового пользователя")]
         [SwaggerResponse(200, "Пользователь успешно зарегистрирован")]
@@ -90,6 +92,7 @@ namespace MarginalValera.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         [SwaggerOperation(Summary = "Вход пользователя и получение JWT")]
         [SwaggerResponse(200, "JWT токен")]
@@ -106,7 +109,7 @@ namespace MarginalValera.Controllers
                 return Unauthorized(new { message = ex.Message });
             }
         }
-
+        [Authorize]
         [HttpGet("users")]
         [SwaggerOperation(Summary = "Получить всех пользователей")]
         [SwaggerResponse(200, "Список пользователей успешно получен")]
@@ -116,7 +119,8 @@ namespace MarginalValera.Controllers
             var users = await _authService.GetAllUsersAsync();
             return Ok(users);
         }
-
+        
+        [Authorize]
         [HttpDelete("users/{id}")]
         [SwaggerOperation(Summary = "Удалить пользователя по Id")]
         [SwaggerResponse(200, "Пользователь успешно удален")]

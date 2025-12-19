@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "PgA61NEfTQ4=",
+  "dgSpecHash": "N3wJMA7X/tk=",
   "success": true,
   "projectFilePath": "/home/grogu/project/4_course/web_dev_csharp/web_dev_csharp/MarginalValera/backend/MarginalValera.csproj",
   "expectedPackageFiles": [
     "/home/grogu/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
+    "/home/grogu/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/8.0.2/microsoft.aspnetcore.authentication.jwtbearer.8.0.2.nupkg.sha512",
     "/home/grogu/.nuget/packages/microsoft.bcl.asyncinterfaces/6.0.0/microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "/home/grogu/.nuget/packages/microsoft.codeanalysis.analyzers/3.3.3/microsoft.codeanalysis.analyzers.3.3.3.nupkg.sha512",
     "/home/grogu/.nuget/packages/microsoft.codeanalysis.common/4.5.0/microsoft.codeanalysis.common.4.5.0.nupkg.sha512",
@@ -31,6 +32,8 @@
     "/home/grogu/.nuget/packages/microsoft.identitymodel.abstractions/8.15.0/microsoft.identitymodel.abstractions.8.15.0.nupkg.sha512",
     "/home/grogu/.nuget/packages/microsoft.identitymodel.jsonwebtokens/8.15.0/microsoft.identitymodel.jsonwebtokens.8.15.0.nupkg.sha512",
     "/home/grogu/.nuget/packages/microsoft.identitymodel.logging/8.15.0/microsoft.identitymodel.logging.8.15.0.nupkg.sha512",
+    "/home/grogu/.nuget/packages/microsoft.identitymodel.protocols/7.1.2/microsoft.identitymodel.protocols.7.1.2.nupkg.sha512",
+    "/home/grogu/.nuget/packages/microsoft.identitymodel.protocols.openidconnect/7.1.2/microsoft.identitymodel.protocols.openidconnect.7.1.2.nupkg.sha512",
     "/home/grogu/.nuget/packages/microsoft.identitymodel.tokens/8.15.0/microsoft.identitymodel.tokens.8.15.0.nupkg.sha512",
     "/home/grogu/.nuget/packages/microsoft.net.test.sdk/18.0.0/microsoft.net.test.sdk.18.0.0.nupkg.sha512",
     "/home/grogu/.nuget/packages/microsoft.openapi/1.6.14/microsoft.openapi.1.6.14.nupkg.sha512",
