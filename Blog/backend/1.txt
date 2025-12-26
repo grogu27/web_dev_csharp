@@ -1,0 +1,103 @@
+BlogApp/
+├── Controllers/
+│   ├── AuthController.cs         # регистрация, логин, JWT
+│   ├── BlogController.cs         # блоги (главная, один блог, CRUD)
+│   ├── ProfileController.cs      # профиль текущего пользователя
+│   └── UsersController.cs        # публичные профили авторов
+├── Services/
+│   ├── AuthService.cs           # регистрация, логин, JWT
+│   ├── BlogService.cs           # логика блогов + права
+│   └── UserService.cs           # профиль, обновление, удаление
+├── Data/
+│   └── AppDbContext.cs
+├── Models/
+│   ├── User.cs                  # пользователь
+│   └── Blog.cs                  # блог
+├── DTOs/
+│   ├── Auth/
+│   │   ├── LoginRequest.cs
+│   │   ├── RegisterRequest.cs
+│   │   └── AuthResponse.cs
+│   ├── Blog/
+│   │   ├── BlogCreateDto.cs
+│   │   ├── BlogUpdateDto.cs
+│   │   ├── BlogResponseDto.cs
+│   │   └── BlogListDto.cs
+│   ├── User/
+│   │   ├── UserProfileDto.cs
+│   │   ├── UpdateProfileDto.cs
+│   │   └── AuthorDto.cs
+│   └── Pagination/
+│       ├── PageRequest.cs
+│       └── PageResponse.cs
+├── Helpers/
+│   ├── JwtHelper.cs             # генерация токена
+│   └── QueryExtensions.cs       # pagination + search
+├── Migrations/
+├── Tests/
+│   ├── BlogServiceTests.cs
+│   └── AuthTests.cs
+├── Program.cs
+├── appsettings.json
+└── BlogApp.csproj
+
+
+admin1@example.com 
+admin1
+Admin123!
+
+qwerty@mail.ru
+qwerty
+qwerty2754
+
+user27@mail.ru
+user27
+user2754
+
+
+
+curl -X POST "http://localhost:5228/api/auth/register" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@example.com",
+    "username": "testuser",
+    "password": "password123"
+  }'
+
+  curl -X POST "http://localhost:5228/api/auth/login" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@example.com",
+    "password": "password123"
+  }'
+# Только через AuthController
+curl -X DELETE "http://localhost:5228/api/auth/me" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+curl -X POST "http://localhost:5228/api/auth/create-admin" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin1@example.com",
+    "username": "admin1",
+    "password": "Admin123!"
+  }'
+
+GET    /api/blog           - все блоги (с пагинацией и поиском)
+GET    /api/blog/{id}      - конкретный блог
+POST   /api/blog           - создать блог
+PUT    /api/blog/{id}      - обновить блог
+DELETE /api/blog/{id}      - удалить блог
+
+GET    /api/auth/me        - информация о текущем пользователе
+POST   /api/auth/register  - регистрация
+POST   /api/auth/login     - вход
+DELETE /api/auth/me        - удалить свой аккаунт
+
+GET    /api/profile/me     - мой профиль
+PUT    /api/profile/me     - обновить профиль
+GET    /api/profile/me/blogs - мои блоги
+POST   /api/profile/me/blogs - создать блог в профиле
+
+GET    /api/users/{id}     - профиль автора
+GET    /api/users/{id}/blogs - блоги автора
+

@@ -1,0 +1,8 @@
+npx create-react-app ReactApp
+cd my-app
+npm start
+
+pg_ctl -D $PGDATA -l logfile start
+pg_ctl -D $PGDATA status
+pg_ctl -D $PGDATA stop
+psql -h localhost -p 5432 blog_db
