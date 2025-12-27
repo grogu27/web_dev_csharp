@@ -22,7 +22,6 @@ builder.Services.AddScoped<JwtHelper>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-// Configure Swagger with JWT support
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Blog API", Version = "v1" });
@@ -54,7 +53,6 @@ builder.Services.AddSwaggerGen(c =>
 
 });
 
-// Configure CORS
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -65,7 +63,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Configure JWT authentication
+//  JWT 
 var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] 
     ?? throw new InvalidOperationException("JWT Key is not configured"));
 
@@ -88,7 +86,6 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

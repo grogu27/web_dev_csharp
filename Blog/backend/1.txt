@@ -77,8 +77,8 @@ curl -X DELETE "http://localhost:5228/api/auth/me" \
 curl -X POST "http://localhost:5228/api/auth/create-admin" \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "admin1@example.com",
-    "username": "admin1",
+    "email": "admin2@example.com",
+    "username": "admin2",
     "password": "Admin123!"
   }'
 

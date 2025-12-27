@@ -10,14 +10,14 @@ import Register from "./components/Register";
 import Profile from "./components/Profile";
 import AuthorProfile from "./components/AuthorProfile";
 import CreateEditBlog from "./components/CreateEditBlog";
-import AdminUsers from "./components/AdminUsers"; // Добавьте этот импорт
+import AdminUsers from "./components/AdminUsers"; 
 import NotFound from "./components/NotFound";
 import { isAuthenticated, getCurrentUserInfo } from "./api/authApi";
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#1976d2",
+      main: "#5a5b5cff",
     },
     secondary: {
       main: "#dc004e",
@@ -46,14 +46,12 @@ function App() {
         <Header />
         <Container>
           <Routes>
-            {/* Публичные маршруты */}
             <Route path="/" element={<BlogList />} />
             <Route path="/blog/:id" element={<BlogDetail />} />
             <Route path="/author/:id" element={<AuthorProfile />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             
-            {/* Защищенные маршруты */}
             <Route path="/profile" element={
               <ProtectedRoute>
                 <Profile />
@@ -70,14 +68,12 @@ function App() {
               </ProtectedRoute>
             } />
             
-            {/* Административные маршруты */}
             <Route path="/admin/users" element={
               <AdminRoute>
                 <AdminUsers />
               </AdminRoute>
             } />
             
-            {/* 404 */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Container>
